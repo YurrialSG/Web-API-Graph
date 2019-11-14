@@ -1,10 +1,47 @@
 import React from 'react'
-import { Modal, Form, Input, Icon } from 'antd';
+import { Modal, Form, Input, Icon, notification } from 'antd'
+import { useMutation } from 'react-apollo'
+import gql from 'graphql-tag'
 
 function ModalCreateProduct({ active, setActive, form: { getFieldDecorator, validateFields, resetFields } }) {
 
+    const [mutate, { loading }] = useMutation(gql`
+    mutation createProduct($data: CreateProductInput!) {
+        createProduct(data: $data) {
+            id
+            barcode
+            description
+            pricekg
+            produced
+        }
+    }
+`)
+
     function onModalSubmit() {
-        setActive(false)
+        validateFields(async (err, values) => {
+            if (!err) {
+                //const user = JSON.parse(localStorage.getItem('user'))
+
+                const { data, errors } = await mutate({
+                    variables: {
+                        data: {
+                            ...values,
+                            //user: {
+                                //id: +user.id
+                            //}
+                        }
+                    }
+                })
+                if (!errors) {
+                    notification.success({
+                        message: `Produto ${data.createProduct.description} cadastrado com sucesso!`
+                    })
+                    setActive(false)
+                    resetFields()
+                }
+            }
+
+        })
     }
     console.log(active)
 

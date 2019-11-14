@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
-import { Table, Button } from 'antd';
+import React, { useState, useEffect } from 'react'
+import { Table, Button } from 'antd'
+import { useQuery, useSubscription } from 'react-apollo'
+import gql from 'graphql-tag'
 
 const columns = [
     {
@@ -30,14 +32,31 @@ const columns = [
 ];
 
 export default function Users() {
-    const [setActive] = useState(false)
+    const [active, setActive] = useState(false)
+
+    const { data, loading, refetch, updateQuery } = useQuery(gql`
+        query allUsers {
+            allUsers {
+                id
+                firstname
+                lastname
+                email
+                password
+                role
+            }
+        }
+    `)
+
+    useEffect(() => {
+        refetch()   
+    }, [active, refetch])
 
     return (
         <>
             <Button type="primary" onClick={() => setActive(true)} style={{ marginBottom: 16 }}>
                 Adicionar
             </Button>
-            <Table columns={columns} pagination={false} />
+            <Table dataSource={data && data.allUsers} loading={loading} columns={columns} pagination={false} />
         </>
     )
 }

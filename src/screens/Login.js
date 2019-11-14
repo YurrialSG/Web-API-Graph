@@ -2,18 +2,72 @@ import React from 'react'
 import { Form, Icon, Input, Button, notification } from 'antd';
 import { Link, useHistory } from 'react-router-dom'
 import './Login.scss'
+import { useMutation } from 'react-apollo'
+import gql from 'graphql-tag'
+
 function Login({ form: { getFieldDecorator, validateFields, setFields } }) {
     const history = useHistory()
     
+    const [mutate] = useMutation(gql`
+    mutation signin($email: String! $password: String!) {
+            signin(email: $email password: $password) {
+                token
+                user {
+                    id
+                    firstname
+                    lastname
+                    email
+                    role
+                }
+            }
+        }
+    `)
+
     function handleSubmit(e) {
         e.preventDefault()
 
-        history.push('/home')
-        notification.open({
-            message: `Padaria Avenida`,
-            description: `Olá Yuri, você está logado no sistema!`,
-            duration: 10,
-            icon: <Icon type="smile" style={{ color: '#108ee9' }} />
+        validateFields(async (err, values) => {
+            if (!err) {
+                const { data } = await mutate({
+                    variables: {
+                        email: values.email,
+                        password: values.password
+                    }
+                })
+                if (!data.signin) {
+                    setFields({
+                        email: {
+                            value: values.email,
+                            errors: [new Error('')]
+                        },
+                        password: {
+                            value: values.password,
+                            errors: [new Error('E-mail ou senha inválida')]
+                        },
+                    })
+                    notification.error({
+                        message: `Error`,
+                        description: `Dados inválidos, tente novamente com outros dados`,
+                        duration: 4,
+                        icon: <Icon type="smile" style={{ color: '#108ee9' }} />
+                    })
+                    return
+                }
+
+                if (data.signin.token) {
+                    localStorage.setItem('token', data.signin.token)
+                    localStorage.setItem('user', JSON.stringify(data.signin.user))
+                    history.push('/home')
+                    notification.open({
+                        message: `Padaria Avenida`,
+                        description: `Olá ${data.signin.user.firstname}, você está logado no sistema!`,
+                        duration: 10,
+                        icon: <Icon type="smile" style={{ color: '#108ee9' }} />
+                    })
+                    return
+                }
+            }
+            
         })
     }
 

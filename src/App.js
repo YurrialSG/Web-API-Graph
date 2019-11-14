@@ -5,37 +5,41 @@ import Login from './screens/Login'
 import Products from './screens/Products'
 import Users from './screens/Users'
 import Register from './screens/Register'
+import { ApolloProvider } from 'react-apollo';
+import { client } from './graphql/client';
 
 function App() {
   return (
-      <Router>
-        <Switch>
-        <Route path="/users">
-            <ContentWrapper>
-              <Users />
-            </ContentWrapper>
-          </Route>
-        <Route path="/products">
-            <ContentWrapper>
-              <Products />
-            </ContentWrapper>
-          </Route>
-        <Route path="/home">
-            <ContentWrapper>
+    <ApolloProvider client={client}>
+        <Router>
+          <Switch>
+          <Route path="/users">
+              <ContentWrapper>
+                <Users />
+              </ContentWrapper>
+            </Route>
+          <Route path="/products">
+              <ContentWrapper>
+                <Products />
+              </ContentWrapper>
+            </Route>
+          <Route path="/home">
+              <ContentWrapper>
 
-            </ContentWrapper>
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/register">
-            <Register />
-          </Route>
-          <Route path="*">
-            <Redirect to="/login" />
-          </Route>
-        </Switch>
-      </Router>
+              </ContentWrapper>
+            </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/register">
+              <Register />
+            </Route>
+            <Route path="*">
+              <Redirect to="/login" />
+            </Route>
+          </Switch>
+        </Router>
+      </ApolloProvider>
   );
 }
 
