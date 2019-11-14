@@ -50,7 +50,7 @@ function ModalCreateProduct({ active, setActive, form: { getFieldDecorator, vali
             title="Cadastro de Produto"
             visible={active}
             onOk={onModalSubmit}
-            //confirmLoading={loading}
+            confirmLoading={loading}
             onCancel={() => setActive(false)}
         >
             <Form>

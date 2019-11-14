@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Table, Button } from 'antd'
-import { useQuery, useSubscription } from 'react-apollo'
+import { useQuery } from 'react-apollo'
 import gql from 'graphql-tag'
 
 const columns = [
@@ -34,7 +34,7 @@ const columns = [
 export default function Users() {
     const [active, setActive] = useState(false)
 
-    const { data, loading, refetch, updateQuery } = useQuery(gql`
+    const { data, loading, refetch } = useQuery(gql`
         query allUsers {
             allUsers {
                 id
