@@ -5,7 +5,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
@@ -13,9 +12,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMutation } from 'react-apollo'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import gql from 'graphql-tag'
 import { Form, Icon, notification } from 'antd';
+import image from "../images/image.jpeg";
 
 function Copyright() {
     return (
@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
         height: '100vh',
     },
     image: {
-        backgroundImage: 'url(https://source.unsplash.com/random)',
+        backgroundImage: `url(${image})`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -113,13 +113,18 @@ function Login({ form: { getFieldDecorator, validateFields, setFields } }) {
                 if (data.signin.token) {
                     localStorage.setItem('token', data.signin.token)
                     localStorage.setItem('user', JSON.stringify(data.signin.user))
-                    history.push('/home')
                     notification.open({
                         message: `Padaria Avenida`,
                         description: `Olá ${data.signin.user.firstname}, você está logado no sistema!`,
                         duration: 10,
-                        icon: <Icon type="smile" style={{ color: '#108ee9' }} />
+                        icon: <Icon type="smile" style={{ color: '#108ee9' }} />,
+                        style: {
+                            width: 500,
+                            marginLeft: 100 - 200,
+                            marginTop: 50,
+                        },
                     })
+                    history.push('/dashboard')
                     return
                 }
             }
@@ -179,17 +184,15 @@ function Login({ form: { getFieldDecorator, validateFields, setFields } }) {
                             className={classes.submit}
                         >
                             Sign In
-            </Button>
+                        </Button>
                         <Grid container>
                             <Grid item xs>
                                 <Link href="#" variant="body2">
                                     Forgot password?
-                </Link>
+                                </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="#" variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
+                                <Link to="/register">Don't have an account? Sign Up</Link>
                             </Grid>
                         </Grid>
                         <Box mt={5}>
