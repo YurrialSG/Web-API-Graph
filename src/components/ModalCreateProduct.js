@@ -13,6 +13,9 @@ function ModalCreateProduct({ active, setActive, form: { getFieldDecorator, vali
             description
             pricekg
             produced
+            user {
+                id
+            }
         }
     }
 `)
@@ -20,21 +23,26 @@ function ModalCreateProduct({ active, setActive, form: { getFieldDecorator, vali
     function onModalSubmit() {
         validateFields(async (err, values) => {
             if (!err) {
-                //const user = JSON.parse(localStorage.getItem('user'))
+                const user = JSON.parse(localStorage.getItem('user'))
 
                 const { data, errors } = await mutate({
                     variables: {
                         data: {
                             ...values,
-                            //user: {
-                                //id: +user.id
-                            //}
+                            user: {
+                                id: user.id
+                            }
                         }
                     }
                 })
                 if (!errors) {
                     notification.success({
-                        message: `Produto ${data.createProduct.description} cadastrado com sucesso!`
+                        message: `Produto ${data.createProduct.description} cadastrado com sucesso!`,
+                        style: {
+                            width: 450,
+                            marginLeft: 160 - 200,
+                            marginTop: 50,
+                        },
                     })
                     setActive(false)
                     resetFields()

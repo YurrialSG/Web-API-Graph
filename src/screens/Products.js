@@ -1,50 +1,76 @@
 import React, { useState, useEffect } from 'react'
-import { Icon, Divider, Table, Button } from 'antd'
-import { useQuery } from 'react-apollo'
+import { Icon, Divider, Table, Button, notification, Popconfirm } from 'antd'
+import { useQuery, useMutation } from 'react-apollo'
 import gql from 'graphql-tag'
 import ModalCreateProduct from '../components/ModalCreateProduct'
 
-const columns = [
-    {
-        title: 'Código de Barra',
-        dataIndex: 'barcode',
-        key: 'barcode',
-    },
-    {
-        title: 'Descrição',
-        dataIndex: 'description',
-        key: 'description',
-    },
-    {
-        title: 'Preço por Kg',
-        dataIndex: 'pricekg',
-        key: 'pricekg',
-    },
-    {
-        title: 'Produção',
-        dataIndex: 'produced',
-        key: 'produced',
-    },
-    {
-        title: 'Inserido por',
-        dataIndex: 'username',
-        key: 'username',
-    },
-    {
-        title: 'Ações',
-        key: 'action',
-        render: () => (
-            <span>
-                <Button><Icon type="edit" style={{ color: '#108ee9' }} /></Button>
-                <Divider type="vertical" />
-                <Button><Icon type="delete" style={{ color: '#108ee9' }} /></Button>
-            </span>
-        )
-    },
-];
-
 export default function Products() {
+
     const [active, setActive] = useState(false)
+
+    const columns = [
+        {
+            title: 'Código de Barra',
+            dataIndex: 'barcode',
+            key: 'barcode',
+        },
+        {
+            title: 'Descrição',
+            dataIndex: 'description',
+            key: 'description',
+        },
+        {
+            title: 'Preço por Kg',
+            dataIndex: 'pricekg',
+            key: 'pricekg',
+        },
+        {
+            title: 'Produção',
+            dataIndex: 'produced',
+            key: 'produced',
+        },
+        {
+            title: 'User',
+            dataIndex: 'user.firstname',
+            key: 'user.firstname',
+        },
+        {
+            title: 'Ações',
+            key: 'action',
+            render: (data) => (
+                <span>
+                    <Button><Icon type="edit" style={{ color: '#108ee9' }} /></Button>
+                    <Divider type="vertical" />
+                    <Popconfirm title="Certeza que deseja excluir?"
+                        onConfirm={() => handleDelete(data['id'])}
+                    >
+                        <Button><Icon type="delete" style={{ color: '#108ee9' }} /></Button>
+                    </Popconfirm>
+                </span>
+            )
+        },
+    ];
+
+    async function handleDelete(id) {
+        const { errors } = await mutationDelete({
+            variables: {
+                id: id
+            }
+        })
+
+        if (!errors) {
+            console.log('ID Product: ' + id);
+            notification.success({
+                message: `Produto de ID: '${id}' excluido com sucesso!`,
+                style: {
+                    width: 500,
+                    marginLeft: 100 - 200,
+                    marginTop: 50,
+                },
+            })
+            refetch()
+        }
+    }
 
     const { data, loading, refetch } = useQuery(gql`
         query allProducts {
@@ -54,8 +80,17 @@ export default function Products() {
                 description
                 pricekg
                 produced
+                user {
+                    firstname
+                }
             }
         }
+    `)
+
+    const [mutationDelete] = useMutation(gql`
+        mutation deleteProduct($id: ID!) {
+            deleteProduct(id: $id)
+        }  
     `)
 
     useEffect(() => {
