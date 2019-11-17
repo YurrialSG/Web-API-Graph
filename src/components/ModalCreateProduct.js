@@ -13,9 +13,6 @@ function ModalCreateProduct({ active, setActive, form: { getFieldDecorator, vali
             description
             pricekg
             produced
-            user {
-                id
-            }
         }
     }
 `)
@@ -23,15 +20,10 @@ function ModalCreateProduct({ active, setActive, form: { getFieldDecorator, vali
     function onModalSubmit() {
         validateFields(async (err, values) => {
             if (!err) {
-                const user = JSON.parse(localStorage.getItem('user'))
-
                 const { data, errors } = await mutate({
                     variables: {
                         data: {
                             ...values,
-                            user: {
-                                id: user.id
-                            }
                         }
                     }
                 })

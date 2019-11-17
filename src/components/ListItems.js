@@ -7,21 +7,66 @@ export const mainListItems = (
   <div>
     <ListItem button component={Link} to='/dashboard'>
       <ListItemIcon>
-        <Dashboard />
+        <Dashboard style={{ color: '#1a237e' }} />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItem>
-    <ListItem button component={Link} to='/products'>
+    <ListItem button component={Link} style={{ color: '#1a237e' }} to='/products'>
       <ListItemIcon>
-        <Store />
+        <Store style={{ color: '#3e2723' }} />
       </ListItemIcon>
-      <ListItemText primary="Produtos" />
+      <ListItemText primary="Produtos" style={{ color: '#3e2723' }} />
     </ListItem>
     <ListItem button component={Link} to='/users'>
       <ListItemIcon>
-        <Group />
+        <Group style={{ color: '#3e2723' }} />
       </ListItemIcon>
-      <ListItemText primary="Usuários" />
+      <ListItemText primary="Usuários" style={{ color: '#3e2723' }} />
+    </ListItem>
+    <ListItem>
+      <ListItemText primary="" />
+    </ListItem>
+    <ListItem>
+      <ListItemText primary="" />
+    </ListItem>
+    <ListItem>
+      <ListItemText primary="" />
+    </ListItem>
+    <ListItem>
+      <ListItemText primary="" />
+    </ListItem>
+    <ListItem>
+      <ListItemText primary="" />
+    </ListItem>
+    <ListItem>
+      <ListItemText primary="" />
+    </ListItem>
+    <ListItem>
+      <ListItemText primary="" />
+    </ListItem>
+    <ListItem>
+      <ListItemText primary="" />
+    </ListItem>
+    <ListItem>
+      <ListItemText primary="" />
+    </ListItem>
+    <ListItem>
+      <ListItemText primary="" />
+    </ListItem>
+    <ListItem>
+      <ListItemText primary="" />
+    </ListItem>
+    <ListItem>
+      <ListItemText primary="" />
+    </ListItem>
+    <ListItem>
+      <ListItemText primary="" />
+    </ListItem>
+    <ListItem>
+      <ListItemText primary="" />
+    </ListItem>
+    <ListItem>
+      <ListItemText primary="" />
     </ListItem>
   </div>
 );

@@ -8,7 +8,7 @@ import { mainListItems } from './ListItems'
 import { Button } from 'antd'
 import { Link } from 'react-router-dom'
 
-const drawerWidth = 240;
+const drawerWidth = 210;
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -35,6 +35,7 @@ const useStyles = makeStyles(theme => ({
         }),
     },
     appBarShift: {
+        backgroundColor: '#1a237e',
         marginLeft: drawerWidth,
         width: `calc(100% - ${drawerWidth}px)`,
         transition: theme.transitions.create(['width', 'margin'], {
@@ -54,6 +55,8 @@ const useStyles = makeStyles(theme => ({
     firstname: {
         marginLeft: '2vh',
         marginRight: '5vh',
+        fontFamily: 'Times New Roman',
+        fontStyle: 'italic',
     },
     drawerPaper: {
         position: 'relative',
@@ -78,17 +81,16 @@ const useStyles = makeStyles(theme => ({
     },
     appBarSpacer: theme.mixins.toolbar,
     content: {
-        marginLeft: '3vh',
         height: 'auto',
-        //width: '181vh',
-        width: '80%',
+        width: '190vh',
     },
     paper: {
         paddingRight: '4vh',
         paddingLeft: '4vh',
         paddingTop: '5vh',
-        overflow: 'auto',
         flexDirection: 'column',
+        width: '100%',
+        height: '100%',
     }
 }));
 
@@ -120,7 +122,9 @@ export default function Home({ children }) {
                         Padaria Avenida
                     </Typography>
                     <Typography component="h6" color="inherit" noWrap className={classes.firstname}>
-                        Usuário: {JSON.parse(window.localStorage.getItem('user')).firstname}
+                        Nome: 
+                        {" " + JSON.parse(window.localStorage.getItem('user')).firstname + " "} 
+                        {JSON.parse(window.localStorage.getItem('user')).lastname} 
                     </Typography>
                     <Link to="/login">
                         <Button type="default" shape="round" icon="logout">Sair</Button>

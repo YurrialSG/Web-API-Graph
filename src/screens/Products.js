@@ -6,8 +6,6 @@ import ModalCreateProduct from '../components/ModalCreateProduct'
 
 export default function Products() {
 
-    const [active, setActive] = useState(false)
-
     const columns = [
         {
             title: 'Código de Barra',
@@ -28,11 +26,6 @@ export default function Products() {
             title: 'Produção',
             dataIndex: 'produced',
             key: 'produced',
-        },
-        {
-            title: 'User',
-            dataIndex: 'user.firstname',
-            key: 'user.firstname',
         },
         {
             title: 'Ações',
@@ -72,6 +65,8 @@ export default function Products() {
         }
     }
 
+    const [active, setActive] = useState(false)
+
     const { data, loading, refetch } = useQuery(gql`
         query allProducts {
             allProducts {
@@ -80,9 +75,6 @@ export default function Products() {
                 description
                 pricekg
                 produced
-                user {
-                    firstname
-                }
             }
         }
     `)
